@@ -2,7 +2,10 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import shopkeeperRouter from './routes/shopkeeper.route.js';
-import customerRouter from './routes/customer.route.js'
+import customerRouter from './routes/customer.route.js';
+import shopRouter from './routes/shop.route.js';
+import bookingRouter from "./routes/booking.route.js";
+import categoryRouter from "./routes/category.route.js";
 import cors from "cors";
 
 const app = express();
@@ -14,10 +17,11 @@ app.use(cors());
 app.use("/shopkeeper",shopkeeperRouter);
 app.use("/customer", customerRouter);
 app.use("/booking",bookingRouter);
-app.use("/category",categoryRouter);
-app.listen(5000,()=>{
+// app.use("/category",categoryRouter);
+app.use("/shop",shopRouter);
+app.listen(3010,()=>{
     console.log("Server Started...");
-});
+  });
 })
 .catch(err=>{
     console.log(err);
