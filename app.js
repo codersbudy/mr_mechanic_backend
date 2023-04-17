@@ -18,7 +18,7 @@ app.use(cors());
 app.use("/shopkeeper",shopkeeperRouter);
 app.use("/customer", customerRouter);
 app.use("/booking",bookingRouter);
-// app.use("/category",categoryRouter);
+app.use("/category",categoryRouter);
 app.use("/shop",shopRouter);
 app.listen(3010,()=>{
     console.log("Server Started...");
