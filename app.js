@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import shopkeeperRouter from './routes/shopkeeper.route.js';
 import customerRouter from './routes/customer.route.js'
+import categoryRouter from './routes/category.route.js';
+import bookingRouter from './routes/booking.route.js';
 import cors from "cors";
 
 const app = express();
