@@ -8,7 +8,6 @@ export const save = async (request, response, next) => {
         if (already.length) {
             return response.status(200).json({ err: "account is already register.....", status: true });
         }
-       
         let shop = await Shop.create(request.body);
         return response.status(200).json({ message: shop, status: true });
     }
@@ -38,8 +37,7 @@ export const getList = (request, response, next) => {
         })
     }
 
-
-export const   id = (request, response, next) => {
+export const id = (request, response, next) => {
     console.log(request.params.shopId);
        Shop.findById(request.params.shopId)
         .then(result => {
@@ -51,32 +49,28 @@ export const   id = (request, response, next) => {
 }
 
 export const update = async (request, response, next) => {
-
     try {
-            let update = await Shop.findOneAndUpdate({shopName: request.body.shopName,
+        let update = await Shop.findOneAndUpdate({shopName: request.body.shopName,
                 photo: request.body.photo,
                 address: request.body.address,
                 latLong: request.body.latLong,
                 contact: request.body.contact,
             }, {
-                    id: request.body.id,
+                    _id: request.body._id,
             })
             return response.status(200).json({ update: update, status: true });
-
-    }
+         }
     catch (err) {
         return response.status(500).json({ err: "internal server error", status: false })
     }
 }
 
 export const updateStatus=async (request, response, next) => {
-
-    try {
-       
-            let update = await Shop.findOneAndUpdate({
+   try {
+       let update = await Shop.findOneAndUpdate({
                 shopStatus: request.body.shopStatus,
             }, {
-                    id: request.body.id
+                    _id: request.body._id
             })
             return response.status(200).json({ update: update, status: true });
     }
