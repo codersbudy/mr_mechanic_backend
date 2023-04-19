@@ -1,7 +1,7 @@
 import { request, response } from "express";
 import { Category } from "../model/category.model.js";
 import { Result } from "express-validator";
-import { response } from "express";
+// import { response } from "express";
 
 
 export const saveCategory=async (request,response,next)=>{

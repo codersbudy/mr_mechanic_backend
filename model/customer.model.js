@@ -7,5 +7,6 @@ const customerSchema = new mongoose.Schema({
     password:String,  
     photo:String,
     rating:Number,
+    tempraryPassword:Number,
 });
 export const Customer = mongoose.model("customer",customerSchema);
