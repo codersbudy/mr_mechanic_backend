@@ -6,4 +6,4 @@ const adminSchema = new mongoose.Schema({
 
 });
 
-export const admin = mongoose.model("customerRating",adminSchema);
+export const Admin = mongoose.model("admin",adminSchema);

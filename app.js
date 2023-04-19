@@ -11,7 +11,7 @@ import dropDownRouter from "./routes/dropDown.route.js";
 import admin from "./router/admin.router.js";
 import customerRating from "./router/customerRating.js" ;
 import mechanicRating from "./router/mechanicRating.js";
-import Mechanic from "./router/mechanic.router.js";
+import Mechanic from "./routes/mechanic.router.js";
 // import adminRouter from "./routes/admin.route.js"
 import cors from "cors";
 

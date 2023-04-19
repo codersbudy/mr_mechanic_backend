@@ -18,7 +18,6 @@ export const save = async (request, response, next) => {
         return response.status(200).json({ mechanic: mechanic, status: true });
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ error: "Internal Server Error", status: false });
     }
 }
@@ -30,8 +29,6 @@ export const signIn = async (request, response, next) => {
             let status = await bcrypt.compare(request.body.password, mechanic.password);
             if (status) {
                 let payload = { subject: mechanic.email };
-                console.log("payload", payload)
-                console.log("email", mechanic.email);
                 let token = Jwt.sign(payload, "coderHub");
                 return response.status(200).json({ messages: "signIn successfully.....", status: true, token: token });
             }
@@ -40,39 +37,33 @@ export const signIn = async (request, response, next) => {
         }
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ err: "internal server error", status: false });
     }
 
 }
 export const signout =( request,response,next)=>{
-    console.log("signout successfull");
+    return response.status(200).json({message:"signOut successfull",status: true});
 
 };
 
 export const getList = (request, response, next) => {
     Mechanic.find()
         .then(result => {
-            console.log(result);
             return response.status(200).json({ result: result, status: true });
         })
         .catch(err => {
-            console.log(err);
             return response.status(500).json({ err: "internal server error" });
         })
 }
 
 export const id = (request, response, next) => {
-    console.log(request.params.shopeeperId);
 
     Mechanic.findbyId(request.params.mechanicId, {
    })
-        .then(result => {
-            console.log(result)
+        .then(result =>{
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
-            console.log(err);
             return response.status(500).json({ err: "internal server error", status: false })
         })
 
@@ -81,11 +72,9 @@ export const id = (request, response, next) => {
 export const remove = (request, response, next) => {
     Mechanic.deleteOne({ id: request.params.mechanicId })
         .then(result => {
-            console.log(result);
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
-            console.log(err);
             return response.status(500).json({ err: "internal server error", status: false })
         })
 }
@@ -95,13 +84,10 @@ export const updateStatus = async (request, response, next) => {
         let update = await Mechanic.updateOne({ id: request.body.id }, { status: request.body.status, })
         if (update)
             return response.status(200).json({ update: update, status: true });
-        console.log(update);
-        
         return response.status(401).json({ message: "bad request", status: false });
 
     }
     catch (err) {
-        console.log(err);
         return response.status(500).json({ err: "internal server error", status: false })
     }
 }
