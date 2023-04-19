@@ -45,7 +45,7 @@ export const forgotPassword = async (request, response, next) => {
                 if (error) {
                    return response.status(200).json({message:"email not sent",status:false});
                 } else {
-                    Admin.updateOne({ contact: customer.contact }, { tempraryPassword: tempraryPassword })
+                    Admin.updateOne({ email:admin.email }, { tempraryPassword: tempraryPassword })
                         .then(result => {
                             response.status(200).json({ result: 'email sent successful', status: true })
 
@@ -72,7 +72,7 @@ export const setPassword = async (request, response, next) => {
                 let saltKey = await bcrypt.genSalt(10);
                 let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
                 request.body.password = encryptedPassword;
-                let update = await Admin.updateOne({ contact: customer.contact },( { password: request.body.password },{tempraryPassword:null}));
+                let update = await Admin.updateOne({ email: admin.email },( { password: request.body.password },{tempraryPassword:null}));
                 return response.status(200).json({result:update,status:true});
             }
             else
