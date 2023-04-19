@@ -1,6 +1,7 @@
 
 import { validationResult } from "express-validator"
 import { Shop  } from "../model/shop.model.js";
+import { response } from "express";
 
 export const save = async (request, response, next) => {
     try {
@@ -35,7 +36,7 @@ export const getList = (request, response, next) => {
         .catch(err => {
             return response.status(500).json({ err: "internal server error", status: false })
         })
-    }
+}
 
 export const id = (request, response, next) => {
     console.log(request.params.shopId);
