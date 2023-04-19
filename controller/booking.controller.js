@@ -1,15 +1,17 @@
 
 import { Booking } from "../model/booking.model.js";
+import { Customer } from "../model/customer.model.js";
 
 
 export const request = async (request, response, next) => {
     var date = Date.now();
 
-    Booking.create({ 'customerId': request.body.customerId, 'status': "pending", 'shopId': request.body.shopId, 'problem': request.body.problem, 'location': request.body.location, 'vehicleNo': request.body.vehicleNo, 'categoryId': request.body.categoryId, 'vehicleName': request.body.vehicleName, 'time': request.body.time, 'latLong': request.body.latLong })
+    Booking.create(request.body)
         .then(result => {
             return response.status(200).json({ result: result, status: false })
         })
         .catch(err => {
+            console.log(err);
             return response.status(500).json({ err: "internal server error", status: false });
         })
 }
@@ -63,24 +65,20 @@ export const bill = async (request, response, next) => {
 }
 
 export const customerHistory = async (request, response, next) => {
-    try {
-        let data = await sequalize.query("select  mechanics.mechanicName,mechanics.contact,shops.shopName,shops.address,shops.contact,bookings.vehicleNo,bookings.status,bookings.actualProblem,bookings.billAmmount,bookings.date from bookings inner join mechanics on mechanics.id=bookings.mechanicId inner join shops on bookings.shopId=shops.id where bookings.customerId=" + request.body.customerId + " and bookings.status='not resolve' or bookings.status='resolve'")
-        if (data)
-            response.status(200).json({ data: data[0], status: true });
-        response.status(401).json({ data: "bed request", status: false });
-    }
-    catch (err) {
-        console.log(err);
-        response.status(500).json({ message: "internal server error", status: false });
-    }
+    try{
+    const data = await Booking.find({customerId:request.body.customerId}).populate({path:'shopId',select:('shopName')}).populate({path:'mechanicId'});
+   data?response.status(200).json({result:data,status:true}): response.status(401).json({result:"bad request",status:false});
+    
+   }
+   catch(err){
+    return response.status(500).json({message:"internal server error",status:false});
+   }
 }
 
 export const mechanicHistory = async (request, response, next) => {
     try {
-        let data = await sequalize.query("select  customers.customerName,customers.contact,bookings.vehicleNo,bookings.vehicleName,bookings.status,bookings.actualProblem,bookings.billAmmount,bookings.date from bookings inner join customers on customers.id=bookings.customerId inner join shops on bookings.shopId=shops.id where bookings.mechanicId=" + request.body.mechanicId + " and bookings.status='not resolve' or bookings.status='resolve'")
-        if (data)
-            response.status(200).json({ data: data[0], status: true });
-        response.status(401).json({ data: "bed request", status: false });
+        const data = await Booking.find({mechanicId:request.body.mechanicId}).populate({path:'shopId',select:('shopName')}).populate({path:'customerId'});
+        data?response.status(200).json({result:data,status:true}): response.status(401).json({result:"bad request",status:false});
     }
     catch (err) {
         response.status(500).json({ message: "internal server error", status: false });
@@ -89,11 +87,9 @@ export const mechanicHistory = async (request, response, next) => {
 
 export const shopHistory = async (request, response, next) => {
     try {
-        let data = await sequalize.query("select  customers.customerName,customers.contact, mechanics.mechanicName,mechanics.contact,bookings.vehicleNo,bookings.status,bookings.actualProblem,bookings.billAmmount,bookings.date from bookings inner join mechanics on mechanics.id=bookings.mechanicId inner join customers on bookings.customerId=customers.id where bookings.shopId=" + request.body.shopId + " and bookings.status='not resolve' or bookings.status='resolve'")
-        if (data)
-            response.status(200).json({ data: data[0], status: true });
-        response.status(401).json({ data: "bed request", status: false });
-    }
+        const data = await Booking.find({shopId:request.body.shopId}).populate({path:'mechanicId'}).populate({path:'customerId'});
+        data?response.status(200).json({result:data,status:true}): response.status(401).json({result:"bad request",status:false});
+     }
     catch (err) {
         console.log(err);
         response.status(500).json({ message: "internal server error", status: false });
@@ -109,6 +105,3 @@ export const id = async (request, response, next) => {
         response.status(500).json({ message: "internal server error", status: false });
     }
 }
-
-
-
