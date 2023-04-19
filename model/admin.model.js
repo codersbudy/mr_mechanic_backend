@@ -1,25 +1,9 @@
 import mongoose from "mongoose";
-const adminSchema =new mongoose.Schema({
-    id:{
-        type:DataTypes.INTEGER,
-        allowNull:false,
-        primaryKey:true,
-        autoIncrement:true
-       },
-       email:{
-        type:DataTypes.STRING(255),
-        allowNull:false,
-        unique:true,
-        validate:{
-           isEmail:true
-        }
-       },
-       password:{
-        type:DataTypes.STRING(16),
-        allowNull:false
-    }
-    
-})
+const adminSchema = new mongoose.Schema({
+   email:String,
+   password:String,
+   tempraryPassword:Number
 
+});
 
-export default Admin = mongoose.model("admin", adminSchema);
+export const admin = mongoose.model("customerRating",adminSchema);
