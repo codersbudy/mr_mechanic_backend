@@ -4,9 +4,11 @@ import mongoose from "mongoose";
 import shopkeeperRouter from './routes/shopkeeper.route.js';
 
 import customerRouter from './routes/customer.route.js'
-import categoryRouter from './routes/category.route.js';
-import bookingRouter from './routes/booking.route.js';
 import shopRouter from './routes/shop.route.js';
+import bookingRouter from "./routes/booking.route.js";
+import categoryRouter from "./routes/category.route.js";
+import dropDownRouter from "./routes/dropDown.route.js"
+// import adminRouter from "./routes/admin.route.js"
 import cors from "cors";
 
 const app = express();
@@ -20,6 +22,7 @@ app.use("/customer", customerRouter);
 app.use("/booking",bookingRouter);
 app.use("/category",categoryRouter);
 app.use("/shop",shopRouter);
+app.use("/dropDown",dropDownRouter);
 app.listen(3010,()=>{
     console.log("Server Started...");
   });

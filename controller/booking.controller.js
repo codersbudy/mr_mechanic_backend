@@ -14,8 +14,6 @@ export const request = async (request, response, next) => {
             console.log(err);
             return response.status(500).json({ err: "internal server error", status: false });
         })
-
-
 }
 
 export const updateStatus = async (request, response, next) => {
