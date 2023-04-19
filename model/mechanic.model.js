@@ -5,7 +5,10 @@ const mechanicSchema = new mongoose.Schema({
     email : String,
    adharcard:String,
    contact:Number,
-   shopId:Number,
+   shopId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"shop"
+   },
    rating :Number,
    password:String,
    status:String,

@@ -14,7 +14,7 @@ export const save = async (request, response, next) => {
         let saltKey = await bcrypt.genSalt(10);
         let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
         request.body.password = encryptedPassword;
-        let mechanic = await Mechanic.save(request.body);
+        let mechanic = await Mechanic.create(request.body);
         return response.status(200).json({ mechanic: mechanic, status: true });
     }
     catch (err) {

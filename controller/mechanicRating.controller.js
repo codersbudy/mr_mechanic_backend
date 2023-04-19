@@ -14,7 +14,7 @@ export const ratinglist = (request, response, next) => {
 
 
 export const ratingsave = (request, response, next) => {
-    mechanicRating.save()
+    mechanicRating.create()
         .then(result => {
             console.log(result);
             return response.status(200).json({ result: result, status: true });
