@@ -1,14 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import admin from "./controller/admin.controller.js";
-import customerRating from "./controller/customerRating.controller.js" ;
-import mechanicRating from "./controller/mechanic.controller.js";
-import Mechanic from "./controller/mechanic.controller.js";
+import admin from "./router/admin.router.js";
+import customerRating from "./router/customerRating.js" ;
+import mechanicRating from "./router/mechanicRating.js";
+import Mechanic from "./router/mechanic.router.js";
 import cors from "cors";
 
 const app = express();
-    const mongourl = "mongodb+srv://coderhub:ddEzvZ6iPe4pKJrF@cluster0.nalrul7.mongodb.net/mr_mecahnic?retryWrites=true&w=majority"
+    const mongourl = "mongodb+srv://coderhub:ddEzvZ6iPe4pKJrF@cluster0.nalrul7.mongodb.net/mr_mechanic?retryWrites=true&w=majority";
     mongoose.connect(mongourl)
 .then(result=>{
 app.use(bodyParser.json());

@@ -1,8 +1,10 @@
 import express  from "express";
+import { verifyToken } from "../middleware/varification.js";
+import {ratinglist,ratingsave} from "../controller/customerRating.controller.js";
 
 const router = express.Router();
 
-router.post("save",save);
-router.post("list",list);
+router.post("/Ratingsave",verifyToken,ratingsave);
+router.post("/Ratinglist",verifyToken,ratinglist);
  
 export default router;

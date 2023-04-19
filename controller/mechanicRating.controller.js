@@ -1,6 +1,6 @@
-import { mechanicRating } from "../model/mechanicRating.model";
+import  {mechanicRating}  from "../model/mechanicRating.model.js"
 
-export const ratingList = (request, response, next) => {
+export const ratinglist = (request, response, next) => {
     mechanicRating.find()
         .then(result => {
             console.log(result);

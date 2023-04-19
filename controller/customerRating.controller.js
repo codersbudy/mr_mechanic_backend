@@ -1,6 +1,7 @@
-import { customerRating } from "../model/customerRating.model";
+import  {customerRating}  from "../model/customerRating.model.js";
+import Jwt from "../middleware/varification.js";
 
-export const ratingList = (request, response, next) => {
+export const ratinglist = (request, response, next) => {
     customerRating.find()
         .then(result => {
             console.log(result);

@@ -12,5 +12,5 @@ const mechanicSchema = new mongoose.Schema({
    photo:String,
 });
 
-export const mechanic = mongoose.model("mechanic",mechanicSchema);
+export const Mechanic = mongoose.model("mechanic",mechanicSchema);
 
