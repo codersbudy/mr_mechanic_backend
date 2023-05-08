@@ -1,6 +1,8 @@
 import express  from "express";
-import { verifyToken } from "../middleware/varification.js";
+
 import {ratinglist,ratingsave} from "../controller/customerRating.controller.js";
+import { verifyToken } from "../middleware/verification.js";
+
 
 const router = express.Router();
 

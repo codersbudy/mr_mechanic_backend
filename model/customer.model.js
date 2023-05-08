@@ -1,12 +1,32 @@
 import mongoose from "mongoose";
 const customerSchema = new mongoose.Schema({
-    id:String,
-    customerName:String,
-    email:String,
-    contact:Number,
-    password:String,  
-    photo:String,
-    rating:Number,
-    tempraryPassword:Number,
+    id:{
+      type:String,
+      require:true,
+    },
+    customerName:{
+      type:  String,
+      require:true,
+    },
+    email:{        
+       type: String,
+    },
+    contact:{
+       type: Number,
+       require:true,
+    },
+    password:{
+        type:String,
+        require:true,
+    },  
+    photo:{
+        type:String,
+    },
+    rating:{
+        type:Number,
+    },
+    tempraryPassword:{
+        type:Number,
+    },
 });
 export const Customer = mongoose.model("customer",customerSchema);

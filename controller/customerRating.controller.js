@@ -1,5 +1,5 @@
 import  {customerRating}  from "../model/customerRating.model.js";
-import Jwt from "../middleware/varification.js";
+
 
 export const ratinglist = (request, response, next) => {
     customerRating.find()

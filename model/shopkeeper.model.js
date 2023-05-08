@@ -5,6 +5,7 @@ const shopkeeperSchema = new mongoose.Schema({
     email : String,
     contact : Number,
     password : String,
-    photo : String
+    photo : String,
+    tempraryPassword:Number,
 });
 export const Shopkeeper = mongoose.model("shopkeeper",shopkeeperSchema);

@@ -1,9 +1,7 @@
 import express from 'express';
-import { byId, forgetPassword, getList, signIn, signOut, signUp, updataProfile} from '../controller/shopkeeper.controller.js';
+import { byId, forgetPassword, getList, signIn, signOut, signUp, updataProfile,verifyOtp,setPassword} from '../controller/shopkeeper.controller.js';
 import { body } from "express-validator";
 import { verifyToken } from '../middleware/verification.js';
-
-// ,signIn,updataPhoto ,updateEmail,getList,id
 const router=express.Router();
 
 router.post("/signUp",
@@ -15,10 +13,11 @@ body("password","password must have minimum 8 later and maximum 16 later").isLen
 signUp);
 
 router.post("/signIn",signIn);
-// router.post("/signOut",signOut);
 router.post("/updateProfie",verifyToken,updataProfile);
 router.get("/list",verifyToken,getList);
 router.post("/byId",verifyToken,byId);
-router.post("/forgetPassword",forgetPassword); //otp matchinig raha hai...
+router.post("/forgetPassword",forgetPassword); 
+router.post("/verifyOtp",verifyOtp)
+router.post("/setPassword",setPassword);//otp matchinig raha hai...
 
 export default router;
