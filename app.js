@@ -8,11 +8,13 @@ import shopRouter from './routes/shop.route.js';
 import bookingRouter from "./routes/booking.route.js";
 import categoryRouter from "./routes/category.route.js";
 import dropDownRouter from "./routes/dropDown.route.js";
+
 // import admin from "./router/admin.router.js";
 import customerRating from "./routes/customerRating.js" ;
 import mechanicRating from "./routes/mechanicRating.js";
 import mechanicRouter from "./routes/mechanic.router.js";
 import adminRouter from "./routes/admin.router.js"
+
 import cors from "cors";
 import path from 'path';
 import { fileURLToPath } from "url";
