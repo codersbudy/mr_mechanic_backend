@@ -4,9 +4,12 @@ import { Customer } from "../model/customer.model.js";
 
 
 export const request = async (request, response, next) => {
-    var date = Date.now();
-
-    Booking.create(request.body)
+      var Date1=new Date(); 
+    let day = Date1.getDate();    
+    let month = Date1.getMonth()+1;
+    let year = Date1.getFullYear();
+    let date=day+"/"+month+"/"+year;
+    Booking.create({customerId:request.body.customerId,shopId:request.body.shopId,problem:request.body.problem,location:request.body.location,vehicleNo:request.body.vehicleNo,categoryId:request.body.categoryId,vehicleName:request.body.vehicleName,status:'pending',billAmmount:0.0,date:date,time:request.body.time,latLong:request.body.latLong,mechanicId:request.body.mechanicId})
         .then(result => {
             return response.status(200).json({ result: result, status: false })
         })
@@ -65,12 +68,15 @@ export const bill = async (request, response, next) => {
 }
 
 export const customerHistory = async (request, response, next) => {
+    console.log(request.body)
     try{
-    const data = await Booking.find({customerId:request.body.customerId}).populate({path:'shopId',select:('shopName')}).populate({path:'mechanicId'});
+    const data = await Booking.find({customerId:request.body.customerId}).populate({path:'shopId'}).populate({path:'mechanicId'});
+    let bookingHistory={}
    data?response.status(200).json({result:data,status:true}): response.status(401).json({result:"bad request",status:false});
     
    }
    catch(err){
+    console.log(err);
     return response.status(500).json({message:"internal server error",status:false});
    }
 }
@@ -99,6 +105,16 @@ export const shopHistory = async (request, response, next) => {
 export const id = async (request, response, next) => {
     try {
         let data = await Booking.findById(request.body.bookingId);
+        data? response.status(200).json({ data: data, status: true }): response.status(401).json({ data: "bed request", status: false });
+    }
+    catch (err) {
+        response.status(500).json({ message: "internal server error", status: false });
+    }
+}
+
+export const updateCustomerId= (request, response, next) => {
+    try {
+        let data =  Booking.updateOne({"Id": request.body.customerId},{"customerId":request.body.updateId});
         data? response.status(200).json({ data: data, status: true }): response.status(401).json({ data: "bed request", status: false });
     }
     catch (err) {

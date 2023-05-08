@@ -1,6 +1,5 @@
 import { request, response } from "express";
 import { Category } from "../model/category.model.js";
-import { Result } from "express-validator";
 // import { response } from "express";
 
 
@@ -31,8 +30,6 @@ export const removeCategory= async (request,response,next)=>{
         return response.status(500).json({message:"internal server error",status:false});
     })
 }
-
-
 
 export const categoryList=(request,response,next)=>{
     Category.find()

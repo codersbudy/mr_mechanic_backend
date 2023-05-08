@@ -9,8 +9,11 @@ const bookingSchema = new mongoose.Schema({
       type:mongoose.Schema.Types.ObjectId,
       ref:"shop"
     },
-    problem:String,
-    location:String,
+    location:{
+      type:String,
+      require:true,
+    
+    },
     vehicleNo:String,
     categoryId:{
         type:mongoose.Schema.Types.ObjectId,
@@ -20,7 +23,10 @@ const bookingSchema = new mongoose.Schema({
        type:mongoose.Schema.Types.ObjectId,
        ref:"shopkeeper"
     },
-    vehicleName:String,
+    vehicleName:{
+      type:String,
+      require:true,
+    },
     status:String,
     mechanicId:{
        type:mongoose.Schema.Types.ObjectId,
