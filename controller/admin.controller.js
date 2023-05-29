@@ -32,9 +32,7 @@ export const forgotPassword = async (request, response, next) => {
             let email = admin.email;
         
             console.log("email", email);
-
-            // ----------------------------------------------------------------------------------------------
-            var transporter = nodemailer.createTransport({
+         var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
                     user: 'vickyhatagale505@gmail.com',
@@ -56,9 +54,7 @@ export const forgotPassword = async (request, response, next) => {
                     console.log('Email sent: ' + info.response);
                 }
             });
-
-            // ----------------------------------------------------------------------------------------------
-            return response.status(200).json({ message: "successfully set password....." });
+   return response.status(200).json({ message: "successfully set password....." });
 
         }
         return response.status(401).json({ message: "this customer not available", status: false });
@@ -88,9 +84,4 @@ export const setPassword = async (request, response, next) => {
     catch (err) {
         response.status(500).json({ err: "internal server error", status: false });
     }
-}
-
-export const signout =(request,response,next)=>{
-    console.log("signout successfull");
-
 }

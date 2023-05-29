@@ -6,12 +6,12 @@ const shopSchema = new mongoose.Schema({
     licenceNo:String, 
     licencePhoto:String,
     address:String,
-    shopKeeperId:Number,
+    shopKeeperId:String,
     rating:Number,
     shopStatus:String,
     latLong:String, 
-    contact:Number
-    
+    contact:String,
+    categories:String,
 });
 
 export const Shop = mongoose.model("shop", shopSchema);

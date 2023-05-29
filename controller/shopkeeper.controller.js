@@ -90,6 +90,7 @@ export const byId = (request, response, next) => {
 export const forgetPassword = async (request, response, next) => {
     
     try {
+
         let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact })
         console.log(shopkeeper);
         if (shopkeeper) {
@@ -99,8 +100,6 @@ export const forgetPassword = async (request, response, next) => {
             let email = shopkeeper.email;
             console.log(email);
             let contact = request.body.contact;
-            
-            // ----------------------------------------------------------------------------------------------
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
