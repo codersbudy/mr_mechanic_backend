@@ -23,9 +23,12 @@ export const forgotPassword = async (request, response, next) => {
     try {
         let admin = await Admin.findOne({ email:request.body.email })
         if (admin) {
-            let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
-            let email = customer.email;
-            var transporter = nodemailer.createTransport({
+            console.log("inner if block");
+            let email = admin.email;
+        
+            console.log("email", email);
+         var transporter = nodemailer.createTransport({
+
                 service: 'gmail',
                 auth: {
                     user: 'abhisen332@gmail.com',
@@ -55,6 +58,9 @@ export const forgotPassword = async (request, response, next) => {
                         })
                 }
             });
+   return response.status(200).json({ message: "successfully set password....." });
+
+
         }
         else
             return response.status(401).json({ message: "this customer not available", status: false });
@@ -86,7 +92,3 @@ export const setPassword = async (request, response, next) => {
     }
 }
 
-export const signout =(request,response,next)=>{
-    return response.status(200).json({ message:"signout successfull ",status :true})
-
-}

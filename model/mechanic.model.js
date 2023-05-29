@@ -13,7 +13,9 @@ const mechanicSchema = new mongoose.Schema({
    password:String,
    status:String,
    photo:String,
+   tempraryPassword:{
+    type:Number,
+},
 });
-
 export const Mechanic = mongoose.model("mechanic",mechanicSchema);
 

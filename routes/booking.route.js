@@ -5,11 +5,11 @@ import { request,updateStatus ,addMechanic,bill,id,customerHistory,mechanicHisto
 import { body } from 'express-validator';
 import { verifyToken } from '../middleware/verification.js';
 router.post("/request",request);
-router.post("/updateStatus",verifyToken,updateStatus);
+router.post("/updateStatus",updateStatus);
 router.post("/addMechanic", verifyToken,addMechanic )
 router.post("/bill",verifyToken,bill);
 router.post("/customerHistory",customerHistory);
-router.get("/mechanicHistory",verifyToken,mechanicHistory);
+router.post("/mechanicHistory",mechanicHistory);
 router.get("/shopHistory",verifyToken,shopHistory);
 router.post("/id",id);
 router.post("/updateCustomerId",updateCustomerId)
