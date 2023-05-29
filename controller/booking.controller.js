@@ -1,4 +1,3 @@
-
 import { Booking } from "../model/booking.model.js";
 import { Customer } from "../model/customer.model.js";
 
@@ -11,7 +10,7 @@ export const request = async (request, response, next) => {
     let date=day+"/"+month+"/"+year;
     Booking.create({customerId:request.body.customerId,shopId:request.body.shopId,problem:request.body.problem,location:request.body.location,vehicleNo:request.body.vehicleNo,categoryId:request.body.categoryId,vehicleName:request.body.vehicleName,status:'pending',billAmmount:0.0,date:date,time:request.body.time,latLong:request.body.latLong,mechanicId:request.body.mechanicId})
         .then(result => {
-            return response.status(200).json({ result: result, status: false })
+            return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
             console.log(err);

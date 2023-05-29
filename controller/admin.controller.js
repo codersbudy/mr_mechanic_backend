@@ -1,4 +1,4 @@
-import {Admin} from "../model/admin.model.js"
+// import {Admin} from "../model/admin.model.js"
 export const signIn = async (request, response, next) => {
     try {
         let admin = await Admin.findOne({email:request.body.email});
