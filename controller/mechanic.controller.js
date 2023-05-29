@@ -20,7 +20,7 @@ export const save = async (request, response, next) => {
         return response.status(200).json({ mechanic: mechanic, status: true });
     }
     catch (err) {
-        
+
         return response.status(500).json({ error: "Internal Server Error", status: false });
     }
 }
@@ -40,20 +40,21 @@ export const signIn = async (request, response, next) => {
         }
     }
     catch (err) {
-        
+
         return response.status(500).json({ err: "internal server error", status: false });
     }
 
 }
 
+
 export const getList = (request, response, next) => {
     Mechanic.find()
         .then(result => {
-         
+
             return response.status(200).json({ result: result, status: true });
         })
         .catch(err => {
-            
+
             return response.status(500).json({ err: "internal server error" });
         })
 }
@@ -61,13 +62,12 @@ export const getList = (request, response, next) => {
 export const id = (request, response, next) => {
 
     Mechanic.findbyId(request.params.mechanicId, {
-    })
-        .then(result => {
-      
+
+   })
+        .then(result =>{
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
-            
             return response.status(500).json({ err: "internal server error", status: false })
         })
 
@@ -76,11 +76,10 @@ export const id = (request, response, next) => {
 export const remove = (request, response, next) => {
     Mechanic.deleteOne({ id: request.params.mechanicId })
         .then(result => {
-    
+
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
-            
             return response.status(500).json({ err: "internal server error", status: false })
         })
 }
@@ -91,12 +90,11 @@ export const updateStatus = async (request, response, next) => {
         if (update)
             return response.status(200).json({ update: update, status: true });
 
-
         return response.status(401).json({ message: "bad request", status: false });
 
     }
     catch (err) {
-        
+
         return response.status(500).json({ err: "internal server error", status: false })
     }
 }

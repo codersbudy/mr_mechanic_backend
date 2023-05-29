@@ -4,6 +4,7 @@ import { body } from 'express-validator';
 import multer from 'multer'
 import { signUp,signIn, updataProfile,registrationVerifyOtp,getList,id,forgotPassword,setPassword, verifyOtp} from '../controller/customer.controller.js';
 import { verifyToken } from '../middleware/verification.js';
+
 const router = express.Router();
 //   const upload = multer({ storage: storage })
 const upload=multer({dest:"public/images"});
