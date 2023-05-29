@@ -14,10 +14,14 @@ const bookingSchema = new mongoose.Schema({
       require:true,
     
     },
-    vehicleNo:String,
+    vehicleNo:{
+      type:String,
+      require:false,
+  },
+    
     categoryId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"category"
+        type:String,
+        require:false,
     },
     shopKeeperId:{
        type:mongoose.Schema.Types.ObjectId,

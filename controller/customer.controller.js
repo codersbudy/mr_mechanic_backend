@@ -54,17 +54,19 @@ export const signIn = async (request, response, next) => {
 
 export const updataProfile = async (request, response, next) => {
     try {
-        console.log(request.file);
+        console.log(request.body);
         const contact=request.body.contact;
         const customerName=request.body.customerName;
         const email =request.body.email;
-        const photo=request.file.filename
-        console.log(request.file);
-        request.body.photo = request.file.filename;
+        let photo=null;
+        if(!(typeof request.file === "undefined")){
+             photo=request.file.filename;
+        }
+        // request.body.photo = request.file.filename;
         let status = await Customer.findOne({contact:request.body.contact})
-        console.log(status);
+        // console.log(status);
         if (status) {
-            let update = await Customer.updateOne({ contact}, { photo, customerName, email})
+            let update = await Customer.updateOne({ contact}, photo?{photo, customerName, email}:{ customerName, email})
             return response.status(200).json({ result: update, status: true });
         }
         else
