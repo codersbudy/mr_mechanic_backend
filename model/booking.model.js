@@ -1,6 +1,7 @@
 
 import mongoose from "mongoose";
 const bookingSchema = new mongoose.Schema({
+
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "customer"
@@ -45,5 +46,6 @@ const bookingSchema = new mongoose.Schema({
     required: true,
   },
   latLong: String
+
 });
 export const Booking= mongoose.model("booking", bookingSchema);

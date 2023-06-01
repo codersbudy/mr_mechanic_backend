@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const mechanicSchema = new mongoose.Schema({
+
     
     mechanicname:String,
     email : String,

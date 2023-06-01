@@ -75,6 +75,7 @@ export const update = async (request, response, next) => {
 export const updateStatus = async (request, response, next) => {
     try {
         let update = await Shop.findOneAndUpdate({
+
             shopStatus: request.body.shopStatus,
         }, {
             _id: request.body._id
@@ -96,6 +97,7 @@ export const nearByShop = async (request, response, next) => {
             return response.status(200).json({ shop: shop, status: true, message: "near by shop found" });
 
         return response.status(200).json({ shop: shop, status: false, message: "near by shop not found" })
+
     }
     catch (err) {
         return response.status(500).json({ message: "Internal server error", status: false })
@@ -120,6 +122,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     //   count++
     console.log(dist);
     return dist
+
 }
 
 
@@ -148,6 +151,17 @@ export const searchByKeyword = async (request, response) => {
     } catch (error) {
         console.error(error);
         response.status(500).send('Server Error');
+// export const nearByShop =async (request, response, next)=>{
+//     try{
+//      let shop = await Shop.find();
+//       shop = shop.filter((shopItem)=>(distance(22.715362124464562, 75.84329461593786,shopItem.latLong.split(",")[0],shopItem.latLong.split(",")[1])<=5.0))
+//       if(shop)
+//         return response.status(200).json({shop: shop, status: true, message: "near by shop found"});
+ 
+//       return response.status(200).json({shop: shop, status: false, message: "near by shop not found"})
+//     }
+//     catch(err) {
+//        return response.status(500).json({message: "Internal server error", status: false})
     }
 
 }

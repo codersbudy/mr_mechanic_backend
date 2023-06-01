@@ -33,6 +33,7 @@ export const request = async (request, response, next) => {
 };
 
 
+
 export const updateStatus = async (request, response, next) => {
     try {
         let status = await Booking.findById(request.body._id);

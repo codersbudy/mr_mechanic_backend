@@ -21,7 +21,7 @@ export const save = async (request, response, next) => {
         return response.status(200).json({ mechanic: mechanic, status: true });
     }
     catch (err) {
-        
+
         return response.status(500).json({ error: "Internal Server Error", status: false });
     }
 }
@@ -46,20 +46,25 @@ export const signIn = async (request, response, next) => {
         }
     }
     catch (err) {
+
         console.log(err)
+
         return response.status(500).json({ err: "internal server error", status: false });
     }
 
 }
+export const signout = (request, response, next) => {
+    return response.status(200).json({ message: "signOut successfull", status: true });
+
 
 export const getList = (request, response, next) => {
     Mechanic.find()
         .then(result => {
-         
+
             return response.status(200).json({ result: result, status: true });
         })
         .catch(err => {
-            
+
             return response.status(500).json({ err: "internal server error" });
         })
 }
@@ -69,11 +74,9 @@ export const id = (request, response, next) => {
     Mechanic.findbyId(request.params.mechanicId, {
     })
         .then(result => {
-      
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
-            
             return response.status(500).json({ err: "internal server error", status: false })
         })
 
@@ -82,11 +85,10 @@ export const id = (request, response, next) => {
 export const remove = (request, response, next) => {
     Mechanic.deleteOne({ id: request.params.mechanicId })
         .then(result => {
-    
+
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
-            
             return response.status(500).json({ err: "internal server error", status: false })
         })
 }
@@ -97,16 +99,29 @@ export const updateStatus = async (request, response, next) => {
         if (update)
             return response.status(200).json({ update: update, status: true });
 
-
         return response.status(401).json({ message: "bad request", status: false });
 
     }
     catch (err) {
-        
+
         return response.status(500).json({ err: "internal server error", status: false })
     }
 }
 
+export const bulkSave = (request, response) => {
+    // request.body.shopdetails.map(async(shop,index)=>{
+    //      let saltKey = await bcrypt.genSalt(10);
+    //      shop.password = await bcrypt.hash("Coder@123", saltKey);
+
+    // })
+    Mechanic.insertMany(request.body.mechanicdetails)
+        .then(result => {
+            return response.json({ message: "save", result: result });
+        }).catch(err => {
+            console.log(err);
+            return response.json({ error: "error" });
+        })
+}
 export const forgotPassword = async (request, response, next) => {
     try {
         let mechanic = await Mechanic.findOne({ contact: request.body.contact })
