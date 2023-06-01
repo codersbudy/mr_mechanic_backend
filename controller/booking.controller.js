@@ -22,7 +22,7 @@ export const request = async (request, response, next) => {
         };
 
         const result = await Booking.create(newBooking);
-        return response.status(200).json({ result: result, status: false });
+        return response.status(200).json({ result: result, status: true });
     } catch (err) {
         console.log(err);
         return response.status(500).json({ err: 'internal server error', status: false });
