@@ -45,6 +45,8 @@ export const signIn = async (request, response, next) => {
     }
 
 }
+export const signout = (request, response, next) => {
+    return response.status(200).json({ message: "signOut successfull", status: true });
 
 
 export const getList = (request, response, next) => {
@@ -62,9 +64,8 @@ export const getList = (request, response, next) => {
 export const id = (request, response, next) => {
 
     Mechanic.findbyId(request.params.mechanicId, {
-
-   })
-        .then(result =>{
+    })
+        .then(result => {
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
@@ -99,6 +100,20 @@ export const updateStatus = async (request, response, next) => {
     }
 }
 
+export const bulkSave = (request, response) => {
+    // request.body.shopdetails.map(async(shop,index)=>{
+    //      let saltKey = await bcrypt.genSalt(10);
+    //      shop.password = await bcrypt.hash("Coder@123", saltKey);
+
+    // })
+    Mechanic.insertMany(request.body.mechanicdetails)
+        .then(result => {
+            return response.json({ message: "save", result: result });
+        }).catch(err => {
+            console.log(err);
+            return response.json({ error: "error" });
+        })
+}
 export const forgotPassword = async (request, response, next) => {
     try {
         let mechanic = await Mechanic.findOne({ contact: request.body.contact })

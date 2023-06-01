@@ -6,15 +6,11 @@ import { Customer } from '../model/customer.model.js'
 import nodemailer from 'nodemailer';
 import Twilio from "twilio";
 
-
-
 export const signUp = async (request, response, next) => {
     try {
         const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ error: "Bad request", messages: errors.array() });
-
-
 
         let already = await Customer.find({
             contact: request.body.contact,
@@ -70,6 +66,7 @@ export const updataProfile = async (request, response, next) => {
         if (status) {
             let update = await Customer.updateOne({ contact}, photo?{photo, customerName, email}:{ customerName, email})
 
+
             return response.status(200).json({ result: update, status: true });
         }
         else
@@ -110,21 +107,40 @@ export const forgotPassword = async (request, response, next) => {
         console.log(customer);
         if (customer) {
             let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
-            var to = "+91" + request.body.contact;
-            console.log(to);
-            const accountSid = 'ACcc7900d25b421f1bc2923e7317631638';
-            const authToken = 'dffda79b48ff8bc2cdab0a6c03eb0f25';
-            const client = Twilio(accountSid, authToken);
-            const message = await client.messages.create({
-                body: `Your OTP is: ${tempraryPassword}`,
-                from: '+13203738823', 
-                to
+            let email = customer.email;
+            let contact = request.body.contact;
+
+            // ----------------------------------------------------------------------------------------------
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'abhisen332@gmail.com',
+                    pass: 'jmdnxihetfwoumic'
+                }
             });
 
-            console.log('OTP sent:', message.sid);
-            Customer.updateOne({ contact: customer.contact }, { tempraryPassword: tempraryPassword })
-                .then(result => {
-                    return response.status(200).json({ result: 'email sent successful', customer: customer, status: true })
+            var mailOptions = {
+                from: 'abhisen332@gmail.com',
+                to: email,
+                subject: "forget password in mr_mechanic",
+                html: "<h1>" + tempraryPassword + "</h1>",
+            };
+
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    return response.status(500).json({ message: "email not sent", status: false });
+                } else {
+                    Customer.updateOne({ contact: customer.contact }, { tempraryPassword: tempraryPassword })
+                        .then(result => {
+                            response.status(200).json({ result: 'email sent successful', customer: customer, status: true })
+
+                        })
+                        .catch(err => {
+                            response.status(500).json({ err: "internal server error", status: false });
+                        })
+                }
+            });
 
                 })
                 .catch(err => {
@@ -189,6 +205,20 @@ export const setPassword = async (request, response, next) => {
     }
 }
 
+export const bulkSave = (request, response) => {
+    // request.body.shopdetails.map(async(shop,index)=>{
+    //      let saltKey = await bcrypt.genSalt(10);
+    //      shop.password = await bcrypt.hash("Coder@123", saltKey);
+
+    // })
+    Customer.insertMany(request.body.customerdetails)
+        .then(result => {
+            return response.json({ message: "save", result: result });
+        }).catch(err => {
+            console.log(err);
+            return response.json({ error: "error" });
+        })
+}
 export const registrationVerifyOtp = async (request, response, next) => {
     try {
       
@@ -221,3 +251,4 @@ export const registrationVerifyOtp = async (request, response, next) => {
         response.status(550).json({ error: 'Failed to send OTP' });
     }
 }
+

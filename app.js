@@ -10,7 +10,7 @@ import categoryRouter from "./routes/category.route.js";
 import dropDownRouter from "./routes/dropDown.route.js";
 
 // import admin from "./router/admin.router.js";
-import customerRating from "./routes/customerRating.js" ;
+import customerRating from "./routes/customerRating.js";
 import mechanicRating from "./routes/mechanicRating.js";
 import mechanicRouter from "./routes/mechanic.router.js";
 import adminRouter from "./routes/admin.router.js"
@@ -25,7 +25,7 @@ const app = express();
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname, "public")));
 mongoose.connect("mongodb+srv://coderhub:ddEzvZ6iPe4pKJrF@cluster0.nalrul7.mongodb.net/mr_mechanic?retryWrites=true&w=majority")
 .then(result=>{
 
@@ -75,4 +75,4 @@ server.listen(3001,()=>{
 .catch(err=>{
     console.log(err);
     console.log("Database not connected...");
-})
+  })

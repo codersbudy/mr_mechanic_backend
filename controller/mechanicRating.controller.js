@@ -10,7 +10,6 @@ export const ratinglist = (request, response, next) => {
         })
 }
 
-
 export const ratingsave = (request, response, next) => {
     mechanicRating.create()
         .then(result => {
