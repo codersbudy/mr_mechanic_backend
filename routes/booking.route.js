@@ -1,7 +1,7 @@
 import express from 'express';
 const router=express.Router();
 // ,customerHistory,
-import { request,updateStatus ,addMechanic,bill,id,customerHistory,mechanicHistory,shopHistory,updateCustomerId} from '../controller/booking.controller.js';
+import { request,updateStatus ,addMechanic,bill,id,customerHistory,mechanicHistory,shopHistory,updateCustomerId,updateShopCustomer} from '../controller/booking.controller.js';
 import { body } from 'express-validator';
 import { verifyToken } from '../middleware/verification.js';
 router.post("/request",request);
@@ -12,5 +12,6 @@ router.post("/customerHistory",customerHistory);
 router.post("/mechanicHistory",mechanicHistory);
 router.get("/shopHistory",verifyToken,shopHistory);
 router.post("/id",id);
-router.post("/updateCustomerId",updateCustomerId)
+router.post("/updateCustomerId",updateCustomerId);
+router.post("/updateShopCustomer",updateShopCustomer)
 export default router;

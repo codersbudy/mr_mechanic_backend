@@ -218,3 +218,21 @@ export const registrationVerifyOtp = async (request, response, next) => {
         response.status(550).json({ error: 'Failed to send OTP' });
     }
 }
+
+
+
+export const bcryptPassword = async (request, response, next) => {
+    try {
+      const newPassword = request.body.newPassword;
+  
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+  
+      await Customer.updateMany({}, { password: hashedPassword });
+  
+      response.status(200).json({ message: 'Passwords updated successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  

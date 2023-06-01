@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import Jwt from "../middleware/verification.js";
 import Twilio from "twilio";
+import { request, response } from "express";
 
 export const save = async (request, response, next) => {
     try {
@@ -28,19 +29,24 @@ export const save = async (request, response, next) => {
 export const signIn = async (request, response, next) => {
     try {
         let mechanic = await Mechanic.findOne({ contact: request.body.contact });
+        console.log(mechanic);
         if (mechanic) {
+            // console.log("innrer if");
             let status = await bcrypt.compare(request.body.password, mechanic.password);
             if (status) {
+
                 let payload = { subject: mechanic.email };
                 let token = Jwt.sign(payload, "coderHub");
+                console.log("innrer if");
                 return response.status(200).json({ messages: "signIn successfully.....", status: true, token: token, mechanic: { ...mechanic.toObject(), password: undefined, token: token } });
+                
             }
             else
                 return response.status(400).json({ err: "bad request", status: false });
         }
     }
     catch (err) {
-        
+        console.log(err)
         return response.status(500).json({ err: "internal server error", status: false });
     }
 
@@ -214,3 +220,6 @@ export const registrationVerifyOtp = async (request, response, next) => {
         response.status(550).json({ error: 'Failed to send OTP' });
     }
 }
+
+
+
