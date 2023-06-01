@@ -6,6 +6,5 @@ const adminSchema = new mongoose.Schema({
 
 });
 
-
-export const admin = mongoose.model("admin",adminSchema);
+export const Admin = mongoose.model("admin",adminSchema);
 

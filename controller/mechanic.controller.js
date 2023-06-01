@@ -1,4 +1,4 @@
-import {Mechanic} from "../model/mechanic.model.js";
+import { Mechanic } from "../model/mechanic.model.js";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 
@@ -7,7 +7,7 @@ export const save = async (request, response, next) => {
         const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ error: "Bad request", messages: errors.array() });
-        let already = await Mechanic.findOne({contact: request.body.contact})
+        let already = await Mechanic.findOne({ contact: request.body.contact })
         if (already) {
             return response.status(200).json({ err: "account is already register.....", status: true });
         }
@@ -41,8 +41,8 @@ export const signIn = async (request, response, next) => {
     }
 
 }
-export const signout =( request,response,next)=>{
-    return response.status(200).json({message:"signOut successfull",status: true});
+export const signout = (request, response, next) => {
+    return response.status(200).json({ message: "signOut successfull", status: true });
 
 };
 
@@ -59,8 +59,8 @@ export const getList = (request, response, next) => {
 export const id = (request, response, next) => {
 
     Mechanic.findbyId(request.params.mechanicId, {
-   })
-        .then(result =>{
+    })
+        .then(result => {
             return response.status(200).json({ result: result, status: true })
         })
         .catch(err => {
@@ -90,4 +90,19 @@ export const updateStatus = async (request, response, next) => {
     catch (err) {
         return response.status(500).json({ err: "internal server error", status: false })
     }
+}
+
+export const bulkSave = (request, response) => {
+    // request.body.shopdetails.map(async(shop,index)=>{
+    //      let saltKey = await bcrypt.genSalt(10);
+    //      shop.password = await bcrypt.hash("Coder@123", saltKey);
+
+    // })
+    Mechanic.insertMany(request.body.mechanicdetails)
+        .then(result => {
+            return response.json({ message: "save", result: result });
+        }).catch(err => {
+            console.log(err);
+            return response.json({ error: "error" });
+        })
 }

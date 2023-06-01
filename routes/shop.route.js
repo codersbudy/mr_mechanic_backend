@@ -16,7 +16,7 @@ router.post("/remove",verifyToken,remove);
 router.get("/getList",getList);
 router.get("/id/:shopId",verifyToken,id);
 router.post("/update",verifyToken,update);
-router.post("/updateStatus",verifyToken,updateStatus)
+router.post("/updateStatus",updateStatus)
 router.post("/nearByShop",nearByShop);
 
 export default router;

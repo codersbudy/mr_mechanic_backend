@@ -5,15 +5,11 @@ import { validationResult } from "express-validator";
 import { Customer } from '../model/customer.model.js'
 import nodemailer from 'nodemailer';
 
-
-
 export const signUp = async (request, response, next) => {
     try {
         const errors = await validationResult(request);
         if (!errors.isEmpty())
             return response.status(400).json({ error: "Bad request", messages: errors.array() });
-
-
 
         let already = await Customer.find({
             contact: request.body.contact,
@@ -24,7 +20,7 @@ export const signUp = async (request, response, next) => {
         let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
         request.body.password = encryptedPassword;
         let customer = await Customer.create(request.body);
-        return response.status(200).json({ customer: customer,customerData:{customerName:customer.customerName,customerContact:customer.contact,customerId:customer._id}, status: true });
+        return response.status(200).json({ customer: customer, customerData: { customerName: customer.customerName, customerContact: customer.contact, customerId: customer._id }, status: true });
     }
     catch (err) {
         return response.status(500).json({ error: "Internal Server Error", status: false });
@@ -33,13 +29,13 @@ export const signUp = async (request, response, next) => {
 
 export const signIn = async (request, response, next) => {
     try {
-        let customer = await Customer.findOne({contact: request.body.contact});
+        let customer = await Customer.findOne({ contact: request.body.contact });
         if (customer) {
             let status = await bcrypt.compare(request.body.password, customer.password);
             if (status) {
                 let payload = { subject: customer.contact };
                 let token = Jwt.sign(payload, "coderHub");
-                return response.status(200).json({ messages: "signIn successfully.....", status: true, token: token, customer: {...customer.toObject(),password:undefined,token:token} });
+                return response.status(200).json({ messages: "signIn successfully.....", status: true, token: token, customer: { ...customer.toObject(), password: undefined, token: token } });
             }
             else
                 return response.status(400).json({ err: "bad request", status: false });
@@ -55,16 +51,16 @@ export const signIn = async (request, response, next) => {
 export const updataProfile = async (request, response, next) => {
     try {
         console.log(request.file);
-        const contact=request.body.contact;
-        const customerName=request.body.customerName;
-        const email =request.body.email;
-        const photo=request.file.filename
+        const contact = request.body.contact;
+        const customerName = request.body.customerName;
+        const email = request.body.email;
+        const photo = request.file.filename
         console.log(request.file);
         request.body.photo = request.file.filename;
-        let status = await Customer.findOne({contact:request.body.contact})
+        let status = await Customer.findOne({ contact: request.body.contact })
         console.log(status);
         if (status) {
-            let update = await Customer.updateOne({ contact}, { photo, customerName, email})
+            let update = await Customer.updateOne({ contact }, { photo, customerName, email })
             return response.status(200).json({ result: update, status: true });
         }
         else
@@ -88,17 +84,17 @@ export const getList = (request, response, next) => {
 }
 
 export const id = async (request, response, next) => {
-    try{
-      let customer= await Customer.findOne({ contact: request.body.contact })
-          customer?response.status(200).json({result:customer,status:true}):response.status(401).json({message:"wrong contact number",status:false});
+    try {
+        let customer = await Customer.findOne({ contact: request.body.contact })
+        customer ? response.status(200).json({ result: customer, status: true }) : response.status(401).json({ message: "wrong contact number", status: false });
     }
-    catch(err){
-        return response.status(500).json({ err: "internal server error", status: false }) 
+    catch (err) {
+        return response.status(500).json({ err: "internal server error", status: false })
     }
 }
 
 export const forgotPassword = async (request, response, next) => {
-    
+
     try {
         let customer = await Customer.findOne({ contact: request.body.contact })
         console.log(customer);
@@ -106,7 +102,7 @@ export const forgotPassword = async (request, response, next) => {
             let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
             let email = customer.email;
             let contact = request.body.contact;
-            
+
             // ----------------------------------------------------------------------------------------------
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -126,11 +122,11 @@ export const forgotPassword = async (request, response, next) => {
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                   return response.status(500).json({message:"email not sent",status:false});
+                    return response.status(500).json({ message: "email not sent", status: false });
                 } else {
                     Customer.updateOne({ contact: customer.contact }, { tempraryPassword: tempraryPassword })
                         .then(result => {
-                            response.status(200).json({ result: 'email sent successful', customer:customer, status: true })
+                            response.status(200).json({ result: 'email sent successful', customer: customer, status: true })
 
                         })
                         .catch(err => {
@@ -154,13 +150,13 @@ export const signOut = (request, response, next) => {
     console.log("sign out");
 }
 
-export const verifyOtp= async(request,response,next)=>{
+export const verifyOtp = async (request, response, next) => {
     try {
         let customer = await Customer.findOne({ contact: request.body.contact });
         console.log(customer);
         if (customer) {
             if (customer.tempraryPassword == request.body.tempraryPassword) {
-                 return response.status(200).json({result:"Verify successfully",status:true});
+                return response.status(200).json({ result: "Verify successfully", status: true });
             }
             else
                 return response.status(401).json({ message: "your temprary password not match", status: false });
@@ -177,15 +173,15 @@ export const verifyOtp= async(request,response,next)=>{
 export const setPassword = async (request, response, next) => {
     try {
         let customer = await Customer.findOne({ contact: request.body.contact });
-        if (customer){
-                let saltKey = await bcrypt.genSalt(10);
-                let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
-                request.body.password = encryptedPassword;
-                let update = await Customer.updateOne({ contact: customer.contact },( { password: request.body.password },{tempraryPassword:null}));
-                if(update)
-                   return response.status(200).json({result:update,status:true});
-                 return response.status(400).json({message:"bad ",status:false}) ; 
-           }
+        if (customer) {
+            let saltKey = await bcrypt.genSalt(10);
+            let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
+            request.body.password = encryptedPassword;
+            let update = await Customer.updateOne({ contact: customer.contact }, ({ password: request.body.password }, { tempraryPassword: null }));
+            if (update)
+                return response.status(200).json({ result: update, status: true });
+            return response.status(400).json({ message: "bad ", status: false });
+        }
         else
             return response.status(401).json({ message: "bad request", status: false });
     }
@@ -193,4 +189,19 @@ export const setPassword = async (request, response, next) => {
         console.log(err);
         response.status(500).json({ err: "internal server error", status: false });
     }
+}
+
+export const bulkSave = (request, response) => {
+    // request.body.shopdetails.map(async(shop,index)=>{
+    //      let saltKey = await bcrypt.genSalt(10);
+    //      shop.password = await bcrypt.hash("Coder@123", saltKey);
+
+    // })
+    Customer.insertMany(request.body.customerdetails)
+        .then(result => {
+            return response.json({ message: "save", result: result });
+        }).catch(err => {
+            console.log(err);
+            return response.json({ error: "error" });
+        })
 }
