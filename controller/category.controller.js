@@ -1,7 +1,5 @@
 import { request, response } from "express";
 import { Category } from "../model/category.model.js";
-// import { response } from "express";
-
 
 export const saveCategory=async (request,response,next)=>{
     try{

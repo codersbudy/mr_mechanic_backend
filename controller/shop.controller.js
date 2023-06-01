@@ -2,6 +2,8 @@
 import { validationResult } from "express-validator"
 import { Shop } from "../model/shop.model.js";
 import { response } from "express";
+import { Shopkeeper } from "../model/shopkeeper.model.js";
+import { Mechanic } from "../model/mechanic.model.js";
 
 export const save = async (request, response, next) => {
     try {
@@ -73,10 +75,10 @@ export const update = async (request, response, next) => {
 export const updateStatus = async (request, response, next) => {
     try {
         let update = await Shop.findOneAndUpdate({
-            _id: request.body._id
-        }, {
 
-            shopStatus: request.body.shopStatus
+            shopStatus: request.body.shopStatus,
+        }, {
+            _id: request.body._id
         })
         return response.status(200).json({ update: update, status: true });
     }
@@ -90,15 +92,14 @@ export const updateStatus = async (request, response, next) => {
 export const nearByShop = async (request, response, next) => {
     try {
         let shop = await Shop.find();
-        shop = shop.filter((shopItem) => (distance(request.body.lat, request.body.long, shopItem.latLong.split(",")[0], shopItem.latLong.split(",")[1]) <= 10.0))
-        console.log(shop);
+        shop = shop.filter((shopItem) => (distance(request.body.lat, request.body.long, shopItem.latLong.split(",")[0], shopItem.latLong.split(",")[1]) <= 5.0))
         if (shop)
             return response.status(200).json({ shop: shop, status: true, message: "near by shop found" });
 
         return response.status(200).json({ shop: shop, status: false, message: "near by shop not found" })
+
     }
     catch (err) {
-        // console.log(err)
         return response.status(500).json({ message: "Internal server error", status: false })
     }
 }
@@ -121,4 +122,46 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     //   count++
     console.log(dist);
     return dist
+
+}
+
+
+export const bulkSave = (request, response) => {
+    Mechanic.insertMany(request.body.shopdetails)
+        .then(result => {
+            return response.json({ message: "save" , result:result});
+        }).catch(err => {
+            console.log(err);
+            return response.json({ error: "error" });
+        })
+}
+
+export const searchByKeyword = async (request, response) => {
+    try {
+        const keyword = request.body.keyword;
+        const results = await Shop.find({
+            $or: [
+                { "address": { $regex: keyword, $options: 'i' } },
+                { "shopName": { $regex: keyword, $options: 'i' } },
+                { "categories": { $regex: keyword, $options: 'i' } },
+                
+            ]
+        });
+        return response.status(200).json({ results:results, status: true });
+    } catch (error) {
+        console.error(error);
+        response.status(500).send('Server Error');
+// export const nearByShop =async (request, response, next)=>{
+//     try{
+//      let shop = await Shop.find();
+//       shop = shop.filter((shopItem)=>(distance(22.715362124464562, 75.84329461593786,shopItem.latLong.split(",")[0],shopItem.latLong.split(",")[1])<=5.0))
+//       if(shop)
+//         return response.status(200).json({shop: shop, status: true, message: "near by shop found"});
+ 
+//       return response.status(200).json({shop: shop, status: false, message: "near by shop not found"})
+//     }
+//     catch(err) {
+//        return response.status(500).json({message: "Internal server error", status: false})
+    }
+
 }

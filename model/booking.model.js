@@ -1,6 +1,7 @@
 
 import mongoose from "mongoose";
 const bookingSchema = new mongoose.Schema({
+
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "customer"
@@ -12,6 +13,7 @@ const bookingSchema = new mongoose.Schema({
   location: {
     type: String,
     require: true,
+
   },
   vehicleNo: String,
   categoryId: {
@@ -33,8 +35,17 @@ const bookingSchema = new mongoose.Schema({
   },
   actualProblem: String,
   billAmmount: Number,
-  date: String,
-  time: String,
+  // date:String,
+  // time:String,
+  date: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: String,
+    required: true,
+  },
   latLong: String
+
 });
-export const Booking = mongoose.model("booking", bookingSchema);
+export const Booking= mongoose.model("booking", bookingSchema);

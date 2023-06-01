@@ -87,23 +87,54 @@ export const byId = (request, response, next) => {
 
 export const forgetPassword = async (request, response, next) => {
 
-  try {
-    let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact })
-    console.log(shopkeeper);
-    if (shopkeeper) {
+    
+    try {
 
-      console.log("inner try");
-      let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
-      let email = shopkeeper.email;
-      console.log(email);
-      let contact = request.body.contact;
+        let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact })
+        console.log(shopkeeper);
+        if (shopkeeper) {
 
-      // ----------------------------------------------------------------------------------------------
-      var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'abhisen332@gmail.com',
-          pass: 'jmdnxihetfwoumic'
+            console.log("inner try");
+            let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
+            let email = shopkeeper.email;
+            console.log(email);
+            let contact = request.body.contact;
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'abhisen332@gmail.com',
+                    pass: 'jmdnxihetfwoumic'
+                }
+            });
+
+            var mailOptions = {
+                from: 'abhisen332@gmail.com',
+                to: email,
+                subject: "forget password in mr_mechanic",
+                html: "<h1>" + tempraryPassword + "</h1>",
+            };
+
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                   return response.status(500).json({message:"email not sent",status:false});
+                } else {
+                    console.log("inner else");
+                    Shopkeeper.updateOne({ contact: shopkeeper.contact }, { tempraryPassword: tempraryPassword })
+                        .then(result => {
+                            console.log(result);
+                            response.status(200).json({ result: 'email sent successful', shopkeeper:shopkeeper, status: true })
+
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            response.status(500).json({ err: "internal server error", status: false });
+                        })
+                }
+            });
+
+            // ----------------------------------------------------------------------------------------------   
         }
       });
 

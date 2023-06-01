@@ -7,6 +7,7 @@ import { Customer } from "../model/customer.model.js";
 import { Mechanic } from "../model/mechanic.model.js";
 import { Shop } from "../model/shop.model.js";
 import nodemailer from 'nodemailer'
+
 export const signIn = async (request, response, next) => {
     try {
 
@@ -93,6 +94,9 @@ export const forgotPassword = async (request, response, next) => {
                         })
                 }
             });
+   return response.status(200).json({ message: "successfully set password....." });
+
+
         }
         else
             return response.status(401).json({ message: "this customer not available", status: false });

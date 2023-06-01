@@ -1,5 +1,5 @@
 import express from 'express';
-import { save, remove, getList, id, update, updateStatus,nearByShop } from '../controller/shop.controller.js';
+import { save, remove, getList,searchByKeyword, id, update, updateStatus,nearByShop ,bulkSave} from '../controller/shop.controller.js';
 import { verifyToken } from '../middleware/verification.js';
 import { body } from 'express-validator';
 const router=express.Router();
@@ -18,5 +18,7 @@ router.get("/id/:shopId",verifyToken,id);
 router.post("/update",verifyToken,update);
 router.post("/updateStatus",updateStatus)
 router.post("/nearByShop",nearByShop);
-
+router.post("/bulkSave",bulkSave);
+router.post("/searchByKeyword",searchByKeyword);
+// router.post("/mechanicList",mechanicList);
 export default router;

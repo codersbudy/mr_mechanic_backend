@@ -1,5 +1,6 @@
 import express from 'express';
-import { byId, forgetPassword, getList, signIn, signOut, signUp, updataProfile, verifyOtp, setPassword, bulkSave } from '../controller/shopkeeper.controller.js';
+
+import { byId, forgetPassword, getList, signIn, signUp, updataProfile,verifyOtp,setPassword} from '../controller/shopkeeper.controller.js';
 import { body } from "express-validator";
 import { verifyToken } from '../middleware/verification.js';
 const router = express.Router();

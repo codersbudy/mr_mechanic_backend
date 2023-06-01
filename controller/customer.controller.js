@@ -4,6 +4,7 @@ import Jwt from "../middleware/verification.js"
 import { validationResult } from "express-validator";
 import { Customer } from '../model/customer.model.js'
 import nodemailer from 'nodemailer';
+import Twilio from "twilio";
 
 export const signUp = async (request, response, next) => {
     try {
@@ -50,17 +51,22 @@ export const signIn = async (request, response, next) => {
 
 export const updataProfile = async (request, response, next) => {
     try {
-        console.log(request.file);
-        const contact = request.body.contact;
-        const customerName = request.body.customerName;
-        const email = request.body.email;
-        const photo = request.file.filename
-        console.log(request.file);
-        request.body.photo = request.file.filename;
-        let status = await Customer.findOne({ contact: request.body.contact })
-        console.log(status);
+
+        console.log(request.body);
+        const contact=request.body.contact;
+        const customerName=request.body.customerName;
+        const email =request.body.email;
+        let photo=null;
+        if(!(typeof request.file === "undefined")){
+             photo=request.file.filename;
+        }
+        // request.body.photo = request.file.filename;
+        let status = await Customer.findOne({contact:request.body.contact})
+        // console.log(status);
         if (status) {
-            let update = await Customer.updateOne({ contact }, { photo, customerName, email })
+            let update = await Customer.updateOne({ contact}, photo?{photo, customerName, email}:{ customerName, email})
+
+
             return response.status(200).json({ result: update, status: true });
         }
         else
@@ -96,6 +102,7 @@ export const id = async (request, response, next) => {
 export const forgotPassword = async (request, response, next) => {
 
     try {
+      
         let customer = await Customer.findOne({ contact: request.body.contact })
         console.log(customer);
         if (customer) {
@@ -135,26 +142,29 @@ export const forgotPassword = async (request, response, next) => {
                 }
             });
 
-            // ----------------------------------------------------------------------------------------------   
+                })
+                .catch(err => {
+                    return response.status(500).json({ err: "internal server error", status: false });
+                })
         }
-        else
-            return response.status(401).json({ message: "this customer not available", status: false });
+        else {
+            return response.status(450).json({ err: "customer not found", status: false })
+        }
     }
-    catch (err) {
-        console.log(err);
-        return response.status(500).json({ err: "internal server error", status: false });
+    catch (error) {
+        console.error('Error sending OTP:', error);
+        response.status(550).json({ error: 'Failed to send OTP' });
     }
 }
 
-export const signOut = (request, response, next) => {
-    console.log("sign out");
-}
 
 export const verifyOtp = async (request, response, next) => {
     try {
         let customer = await Customer.findOne({ contact: request.body.contact });
         console.log(customer);
         if (customer) {
+            console.log("object ka temprary" + customer.tempraryPassword);
+            console.log("body ka temprary" + request.body.tempraryPassword);
             if (customer.tempraryPassword == request.body.tempraryPassword) {
                 return response.status(200).json({ result: "Verify successfully", status: true });
             }
@@ -177,7 +187,11 @@ export const setPassword = async (request, response, next) => {
             let saltKey = await bcrypt.genSalt(10);
             let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
             request.body.password = encryptedPassword;
-            let update = await Customer.updateOne({ contact: customer.contact }, ({ password: request.body.password }, { tempraryPassword: null }));
+            let update = await Customer.updateOne({ contact: customer.contact }, {
+                "$set": {
+                    password: request.body.password, tempraryPassword: null
+                }
+            });
             if (update)
                 return response.status(200).json({ result: update, status: true });
             return response.status(400).json({ message: "bad ", status: false });
@@ -205,3 +219,36 @@ export const bulkSave = (request, response) => {
             return response.json({ error: "error" });
         })
 }
+export const registrationVerifyOtp = async (request, response, next) => {
+    try {
+      
+        let customer = await Customer.findOne({ contact: request.body.contact })
+        console.log(customer);
+        if (!customer) {
+            let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
+            var to = "+91" + request.body.contact;
+            console.log(to);
+            const accountSid = 'ACcc7900d25b421f1bc2923e7317631638';
+            const authToken = 'dffda79b48ff8bc2cdab0a6c03eb0f25';
+            const client = Twilio(accountSid, authToken);
+
+            const message = await client.messages.create({
+                body: `Your OTP is: ${tempraryPassword}`,
+                from: '+13203738823', 
+                to
+            });
+
+            console.log('OTP sent:', message.sid);
+            return response.status(200).json({ otp: tempraryPassword, status: true });
+        }
+        else {
+            console.log("inner elese")
+            return response.status(450).json({ err: "contact already register please log in", status: false })
+        }
+    }
+    catch (error) {
+        console.error('Error sending OTP:', error);
+        response.status(550).json({ error: 'Failed to send OTP' });
+    }
+}
+
