@@ -2,8 +2,8 @@ import express from 'express';
 import { body } from 'express-validator';
 // import { verify } from 'jsonwebtoken';
 import multer from 'multer'
+import { signUp,signIn, updataProfile,registrationVerifyOtp,getList,id,forgotPassword,setPassword,bcryptPassword, verifyOtp} from '../controller/customer.controller.js';
 
-import { signUp,signIn, updataProfile,registrationVerifyOtp,getList,id,forgotPassword,setPassword, verifyOtp} from '../controller/customer.controller.js';
 import { verifyToken } from '../middleware/verification.js';
 
 const router = express.Router();
@@ -32,6 +32,8 @@ body("password", "please enter password").notEmpty(),
 body("password", "password must have minimum 8 later and maximum 16 later").isLength({
     min: 8,
     max: 16
-}),registrationVerifyOtp)
+}),registrationVerifyOtp);
+
+router.post("/bcryptPassword",bcryptPassword)
 
 export default router;

@@ -34,7 +34,7 @@ const bookingSchema = new mongoose.Schema({
     ref: "mechanic"
   },
   actualProblem: String,
-  billAmmount: Number,
+  billAmount: Number,
   // date:String,
   // time:String,
   date: {
