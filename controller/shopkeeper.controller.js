@@ -48,8 +48,6 @@ export const signIn = async (request, response, next) => {
   }
 }
 
-export const signOut = (request, response, next) => { }
-
 export const updataProfile = async (request, response, next) => {
   try {
     let update = await Shopkeeper.updateOne({ _id: request.body.id }, { photo: request.body.photo, email: request.body.email, shopkeeperName: request.body.shopkeeperName })
@@ -91,79 +89,12 @@ export const forgetPassword = async (request, response, next) => {
     try {
 
         let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact })
-        console.log(shopkeeper);
         if (shopkeeper) {
 
             console.log("inner try");
             let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
             let email = shopkeeper.email;
-            console.log(email);
             let contact = request.body.contact;
-            var transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: 'abhisen332@gmail.com',
-                    pass: 'jmdnxihetfwoumic'
-                }
-            });
-
-            var mailOptions = {
-                from: 'abhisen332@gmail.com',
-                to: email,
-                subject: "forget password in mr_mechanic",
-                html: "<h1>" + tempraryPassword + "</h1>",
-            };
-
-
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                   return response.status(500).json({message:"email not sent",status:false});
-                } else {
-                    console.log("inner else");
-                    Shopkeeper.updateOne({ contact: shopkeeper.contact }, { tempraryPassword: tempraryPassword })
-                        .then(result => {
-                            console.log(result);
-                            response.status(200).json({ result: 'email sent successful', shopkeeper:shopkeeper, status: true })
-
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            response.status(500).json({ err: "internal server error", status: false });
-                        })
-                }
-            });
-
-            // ----------------------------------------------------------------------------------------------   
-        }
-      });
-
-      var mailOptions = {
-        from: 'abhisen332@gmail.com',
-        to: email,
-        subject: "forget password in mr_mechanic",
-        html: "<h1>" + tempraryPassword + "</h1>",
-      };
-
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-          return response.status(500).json({ message: "email not sent", status: false });
-        } else {
-          console.log("inner else");
-          Shopkeeper.updateOne({ contact: shopkeeper.contact }, { tempraryPassword: tempraryPassword })
-            .then(result => {
-              console.log(result);
-              response.status(200).json({ result: 'email sent successful', shopkeeper: shopkeeper, status: true })
-
-            })
-            .catch(err => {
-              console.log(err);
-              response.status(500).json({ err: "internal server error", status: false });
-            })
-        }
-      });
 
       // ----------------------------------------------------------------------------------------------   
     }
@@ -196,11 +127,7 @@ export const verifyOtp = async (request, response, next) => {
   }
 }
 export const bulkSave = (request, response) => {
-  // request.body.shopdetails.map(async(shop,index)=>{
-  //      let saltKey = await bcrypt.genSalt(10);
-  //      shop.password = await bcrypt.hash("Coder@123", saltKey);
-
-  // })
+  
   Shopkeeper.insertMany(request.body.shopkeeperdetails)
     .then(result => {
       return response.json({ message: "save", result: result });

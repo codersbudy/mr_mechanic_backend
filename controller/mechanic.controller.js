@@ -53,8 +53,7 @@ export const signIn = async (request, response, next) => {
     }
 
 }
-export const signout = (request, response, next) => {
-    return response.status(200).json({ message: "signOut successfull", status: true });
+
 
 
 export const getList = (request, response, next) => {
@@ -235,6 +234,4 @@ export const registrationVerifyOtp = async (request, response, next) => {
         response.status(550).json({ error: 'Failed to send OTP' });
     }
 }
-
-
-
+ 
