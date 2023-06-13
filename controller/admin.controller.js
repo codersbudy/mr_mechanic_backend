@@ -34,28 +34,6 @@ export const signIn = async (request, response, next) => {
     }
 }
 
-export const signUp = async (request, response, next) => {
-    try {
-        const errors = await validationResult(request);
-        if (!errors.isEmpty())
-            return response.status(400).json({ error: "Bad request", messages: errors.array() });
-
-
-        let already = await Admin.find({
-            email: request.body.email,
-        })
-        if (already.length)
-            return response.status(200).json({ err: "account is already register.....", status: true });
-        let saltKey = await bcrypt.genSalt(10);
-        let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
-        request.body.password = encryptedPassword;
-        let admin = await Admin.create(request.body);
-        return response.status(200).json({ admin: admin, status: true });
-    }
-    catch (err) {
-        return response.status(500).json({ error: "Internal Server Error", status: false });
-    }
-}
 
 export const forgotPassword = async (request, response, next) => {
     try {
@@ -129,10 +107,6 @@ export const setPassword = async (request, response, next) => {
     }
 }
 
-export const signout = (request, response, next) => {
-    return response.status(200).json({ message: "signout successfull ", status: true })
-
-}
 
 export const appPerformance = async (request, response, next) => {
     try {

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-const mechanicRatingSchema = new mongoose.Schema({
-    mechanicId:{
+const shopRatingSchema = new mongoose.Schema({
+    shopId:{
       require:true,
       type:mongoose.Schema.Types.ObjectId,
       ref:"mechanic"
@@ -10,4 +10,4 @@ const mechanicRatingSchema = new mongoose.Schema({
         type:Number
     }
 });
-export const mechanicRating = mongoose.model("mechanicRating",mechanicRatingSchema);
+export const shopRating = mongoose.model("shopRating",shopRatingSchema);

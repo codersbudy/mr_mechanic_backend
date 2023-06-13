@@ -10,7 +10,6 @@ import categoryRouter from "./routes/category.route.js";
 import dropDownRouter from "./routes/dropDown.route.js";
 
 // import admin from "./router/admin.router.js";
-import customerRating from "./routes/customerRating.js";
 import mechanicRating from "./routes/mechanicRating.js";
 import mechanicRouter from "./routes/mechanic.router.js";
 import adminRouter from "./routes/admin.router.js"
@@ -62,7 +61,7 @@ app.use("/dropDown",dropDownRouter);
 app.use("/mechanic",mechanicRouter);
 app.use("/admin",adminRouter);
 app.use("/mechanicRating",mechanicRating);
-app.use("/customerRating",customerRating);
+// app.use("/customerRating",customerRating);
 
 
 

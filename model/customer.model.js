@@ -22,9 +22,6 @@ const customerSchema = new mongoose.Schema({
     photo:{
         type:String,
     },
-    rating:{
-        type:Number,
-    },
     tempraryPassword:{
         type:Number,
     },

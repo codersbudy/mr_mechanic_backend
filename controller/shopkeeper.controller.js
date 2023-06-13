@@ -15,7 +15,7 @@ export const signUp = async (request, response, next) => {
     let saltKey = await bcrypt.genSalt(10);
     request.body.password = await bcrypt.hash(request.body.password, saltKey);
 
-    let shopkeeper = await Shopkeeper.create({ shopkeeperName: request.body.shopkeeperName, contact: request.body.contact, password: request.body.password, tempraryPassword: null, email: request.body.email });
+    let shopkeeper = await Shopkeeper.create({ contact: request.body.contact, password: request.body.password, tempraryPassword: null, email: request.body.email });
     return response.status(200).json({ message: "registration successfull...", status: true });
   }
   catch (err) {
@@ -60,17 +60,6 @@ export const updataProfile = async (request, response, next) => {
   }
 }
 
-export const getList = (request, response, next) => {
-
-  Shopkeeper.find()
-    .then(result => {
-      return response.status(200).json({ result: result, status: true });
-    })
-    .catch(err => {
-      return response.status(500).json({ err: "internal server error" });
-    })
-}
-
 export const byId = (request, response, next) => {
 
   Shopkeeper.findById(request.body.id)
@@ -83,49 +72,7 @@ export const byId = (request, response, next) => {
 
 }
 
-export const forgetPassword = async (request, response, next) => {
 
-    
-    try {
-
-        let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact })
-        if (shopkeeper) {
-
-            console.log("inner try");
-            let tempraryPassword = Math.floor(100000 + Math.random() * 900000);
-            let email = shopkeeper.email;
-            let contact = request.body.contact;
-
-      // ----------------------------------------------------------------------------------------------   
-    }
-    else
-      return response.status(401).json({ message: "this shopkeeper not available", status: false });
-  }
-  catch (err) {
-    console.log(err);
-    return response.status(500).json({ err: "internal server error", status: false });
-  }
-}
-
-export const verifyOtp = async (request, response, next) => {
-  try {
-    let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact });
-    console.log(shopkeeper);
-    if (shopkeeper) {
-      if (shopkeeper.tempraryPassword == request.body.tempraryPassword) {
-        return response.status(200).json({ result: "Verify successfully", status: true });
-      }
-      else
-        return response.status(401).json({ message: "your temprary password not match", status: false });
-    }
-    else
-      return response.status(401).json({ message: "bad request", status: false });
-  }
-  catch (err) {
-    console.log(err);
-    response.status(500).json({ err: "internal server error", status: false });
-  }
-}
 export const bulkSave = (request, response) => {
   
   Shopkeeper.insertMany(request.body.shopkeeperdetails)
@@ -137,26 +84,7 @@ export const bulkSave = (request, response) => {
     })
 }
 
-export const setPassword = async (request, response, next) => {
-  try {
-    let shopkeeper = await Shopkeeper.findOne({ contact: request.body.contact });
-    if (shopkeeper) {
-      let saltKey = await bcrypt.genSalt(10);
-      let encryptedPassword = await bcrypt.hash(request.body.password, saltKey);
-      request.body.password = encryptedPassword;
-      let update = await Shopkeeper.updateOne({ contact: shopkeeper.contact }, ({ password: request.body.password }, { tempraryPassword: null }));
-      if (update)
-        return response.status(200).json({ result: update, status: true });
-      return response.status(400).json({ message: "bad ", status: false });
-    }
-    else
-      return response.status(401).json({ message: "bad request", status: false });
-  }
-  catch (err) {
-    console.log(err);
-    response.status(500).json({ err: "internal server error", status: false });
-  }
-}
+
 
 
 
