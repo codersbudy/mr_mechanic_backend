@@ -1,6 +1,6 @@
 import { response } from "express";
 import { Booking } from "../model/booking.model.js";
-import { mechanicRating } from "../model/mechanicRating.model.js";
+// import { mechanicRating } from "../model/mechanicRating.model.js";sss
 import { Mechanic } from "../model/mechanic.model.js";
 export const request = async (request, response, next) => {
     try {
@@ -66,21 +66,6 @@ export const addMechanic = async (request, response, next) => {
 
 }
 
-export const bill = async (request, response, next) => {
-    try {
-        let status = await Booking.findById(request.body.bookingId);
-        if (status.status == "accept") {
-            let update = await Booking.updateOne({ _id: request.body.bookingId }, { billAmmount: request.body.billAmmount, actualProblem: request.body.actualProblem })
-            response.status(200).json({ update: update, status: true });
-        }
-        else
-            response.status(401).json({ message: "bad request" });
-    }
-    catch (err) {
-        response.status(500).json({ message: "internal server error", status: false });
-    }
-
-}
 
 export const customerHistory = async (request, response, next) => {
     console.log(request.body);
@@ -103,44 +88,6 @@ export const customerHistory = async (request, response, next) => {
             .json({ message: 'internal server error', status: false });
     }
 };
-
-
-
-export const mechanicHistory = async (request, response, next) => {
-    console.log(request.body);
-    try {
-        const data = await Booking.find({ mechanicId: request.body.mechanicId })
-            .populate({ path: 'shopId' })
-            .populate({ path: 'customerId' })
-            .sort({ date: 1 })
-            .lean();
-
-        if (data) {
-            response.status(200).json({ result: data, status: true });
-        } else {
-            response.status(401).json({ result: 'bad request', status: false });
-        }
-    } catch (err) {
-        console.log(err);
-        return response
-            .status(500)
-            .json({ message: 'internal server error', status: false });
-    }
-};
-
-
-// export const mechanicHistory = async (request, response, next) => {
-//     try {
-//         var data = await Booking.find({ mechanicId: request.body.mechanicId }).populate({ path: 'shopId', select: ('shopName') }).populate({ path: 'customerId' });
-         
-//         // const rating=await mechanicRating.find({mechanicId:request.body.mechanicId});
-//         // data={...data,rating}
-//         data ? response.status(200).json({ result:data, status: true }) : response.status(401).json({ result: "bad request", status: false });
-//     }
-//     catch (err) {
-//         response.status(500).json({ message: "internal server error", status: false });
-//     }
-// }
 
 export const shopHistory = async (request, response, next) => {
     try {

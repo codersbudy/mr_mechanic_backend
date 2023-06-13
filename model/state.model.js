@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 const stateSchema = new mongoose.Schema({
     stateName:String

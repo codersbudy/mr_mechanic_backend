@@ -20,10 +20,6 @@ const bookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "category"
   },
-  shopKeeperId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "shopkeeper"
-  },
   vehicleName: {
     type: String,
     require: true,
@@ -33,10 +29,7 @@ const bookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "mechanic"
   },
-  actualProblem: String,
-  billAmount: Number,
-  // date:String,
-  // time:String,
+  problem: String,
   date: {
     type: String,
     required: true,

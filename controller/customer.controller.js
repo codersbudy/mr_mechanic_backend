@@ -78,17 +78,6 @@ export const updataProfile = async (request, response, next) => {
     }
 }
 
-
-export const getList = (request, response, next) => {
-    Customer.find()
-        .then(result => {
-            return response.status(200).json({ result: result, status: true });
-        })
-        .catch(err => {
-            return response.status(500).json({ err: "internal server error" });
-        })
-}
-
 export const id = async (request, response, next) => {
     try {
         let customer = await Customer.findOne({ contact: request.body.contact })
